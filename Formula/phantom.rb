@@ -1,35 +1,47 @@
+# Phantom — Homebrew formula
+#
+# This formula lives in the ashlrai/homebrew-phantom tap repo.
+# It is mirrored here in the main repo so changes can be reviewed
+# alongside the code that produces the binaries it downloads.
+#
+# To update for a new release, the release.yml workflow opens a PR
+# against ashlrai/homebrew-phantom that bumps `version` and the
+# four sha256 lines.
+
 class Phantom < Formula
-  desc "Prevent AI coding agents from leaking your API keys"
+  desc "Stop AI coding agents from leaking your API keys"
   homepage "https://phm.dev"
-  version "0.4.0"
+  version "0.5.1"
   license "MIT"
 
   on_macos do
-    if Hardware::CPU.arm?
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.4.0/phantom-aarch64-apple-darwin.tar.gz"
-      sha256 "b35797fe407a4359a9a19726e7268e81f250e5afab68d47f0b9bd10073587ba4"
-    else
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.4.0/phantom-x86_64-apple-darwin.tar.gz"
-      sha256 "060e1cd6ef6cc1915600b6d472672a91f821ecf0bc00008f5e7c8b5ed036b7a7"
+    on_arm do
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v#{version}/phantom-aarch64-apple-darwin.tar.gz"
+      sha256 "b105cc44e383ee8c509f10306617792e7fe39c393a7bcb61c7e42e9730e1ed3b"
+    end
+    on_intel do
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v#{version}/phantom-x86_64-apple-darwin.tar.gz"
+      sha256 "2df5310406ec5a9dc9c92dae774cccd0f2d866fe41ed6f9cab68d1f491bbef2c"
     end
   end
 
   on_linux do
-    if Hardware::CPU.arm?
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.4.0/phantom-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "a97808ea4b21fc0cdb41e8f126825e507db4b3e20b051130de02d9171c36533d"
-    else
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.4.0/phantom-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "6029aaa76379c2b15a5b06519c562860f2465f9db5c79a65726934053b0c046a"
+    on_arm do
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v#{version}/phantom-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "85887b38f628cdeb3532352b7506dd22269d946a5fc240c8ede776b1abbabf9e"
+    end
+    on_intel do
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v#{version}/phantom-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "de4eef7295f6607feae9aff96c807b37af9cc1c3155b50e6cb68f33d2e640958"
     end
   end
 
   def install
     bin.install "phantom"
-    bin.install "phantom-mcp" if File.exist?("phantom-mcp")
+    bin.install "phantom-mcp"
   end
 
   test do
-    assert_match "phantom", shell_output("#{bin}/phantom --version")
+    assert_match "phantom #{version}", shell_output("#{bin}/phantom --version")
   end
 end
