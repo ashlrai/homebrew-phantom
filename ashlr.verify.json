@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "mode": "replace-detected",
+  "commands": [
+    {
+      "id": "phantom-ruby-syntax",
+      "kind": "typecheck",
+      "cmd": ["ruby", "-c", "Formula/phantom.rb"],
+      "cwd": ".",
+      "timeoutMs": 180000,
+      "required": true,
+      "profiles": ["quick", "merge", "deep"]
+    }
+  ]
+}
