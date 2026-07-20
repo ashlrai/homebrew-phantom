@@ -10,6 +10,15 @@
       "timeoutMs": 180000,
       "required": true,
       "profiles": ["quick", "merge", "deep"]
+    },
+    {
+      "id": "phantom-homebrew-style",
+      "kind": "lint",
+      "cmd": ["brew", "style", "Formula/phantom.rb"],
+      "cwd": ".",
+      "timeoutMs": 180000,
+      "required": true,
+      "profiles": ["quick", "merge", "deep"]
     }
   ]
 }
