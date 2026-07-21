@@ -43,5 +43,6 @@ class Phantom < Formula
 
   test do
     assert_match "phantom #{version}", shell_output("#{bin}/phantom --version")
+    assert_predicate bin/"phantom-mcp", :executable?
   end
 end
