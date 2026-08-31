@@ -11,8 +11,32 @@ permissions:
 
 jobs:
   formula:
-    runs-on: macos-latest
+    name: Verify (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            arch: arm64
+          - os: macos-15-intel
+            arch: x86_64
+    runs-on: ${{ matrix.os }}
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
     steps:
-      - uses: actions/checkout@v4
-      - run: ruby -c Formula/phantom.rb
-      - run: brew style Formula/phantom.rb
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Verify runner architecture
+        run: test "$(uname -m)" = "${{ matrix.arch }}"
+      - name: Validate formula
+        run: |
+          ruby -c Formula/phantom.rb
+          brew style Formula/phantom.rb
+          brew audit --strict --online Formula/phantom.rb
+      - name: Install and test release
+        run: |
+          brew install --formula Formula/phantom.rb
+          brew test phantom
+          test "$(phantom --version)" = "phantom 0.7.0"
+          test "$(phantom-mcp --version)" = "phantom-mcp 0.7.0"
