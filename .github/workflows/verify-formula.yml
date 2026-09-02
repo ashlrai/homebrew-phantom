@@ -11,33 +11,72 @@ permissions:
 
 jobs:
   formula:
-    name: Verify (${{ matrix.arch }})
+    name: Verify (${{ matrix.os }} / ${{ matrix.arch }})
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: macos-15
             arch: arm64
+            target: aarch64-apple-darwin
+            sha256: c1b88312fb0d36ffb3a3b8ed1622de9f95907f3a7a1cac70404856b82ae6b34b
           - os: macos-15-intel
             arch: x86_64
+            target: x86_64-apple-darwin
+            sha256: 1f71730467bff259d407b98948c1ce3bf89a868dc9a54e1bce44e42d59930c5a
+          - os: ubuntu-24.04
+            arch: x86_64
+            target: x86_64-unknown-linux-gnu
+            sha256: dc94282a47ff04f88245c750248b1557a220a35acb9aa206443ddb04f94accbc
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+            target: aarch64-unknown-linux-gnu
+            sha256: a4ed92c3662daf95584d9a77a13edce7af055b849d25c38acd192d13de7eed5e
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     env:
       HOMEBREW_NO_AUTO_UPDATE: "1"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Add Homebrew to PATH on Linux
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          test -x /home/linuxbrew/.linuxbrew/bin/brew
+          echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+          echo "/home/linuxbrew/.linuxbrew/sbin" >> "$GITHUB_PATH"
       - name: Verify runner architecture
+        shell: bash
         run: test "$(uname -m)" = "${{ matrix.arch }}"
       - name: Validate formula
+        shell: bash
         run: |
           ruby -c Formula/phantom.rb
           brew style Formula/phantom.rb
-      - name: Install and test release
+      - name: Configure test tap
+        shell: bash
         run: |
           brew tap-new --no-git ashlrai/phantom
           tap_dir="$(brew --repository ashlrai/phantom)"
           cp Formula/phantom.rb "${tap_dir}/Formula/phantom.rb"
           brew trust --formula ashlrai/phantom/phantom
+      - name: Verify selected release archive
+        env:
+          EXPECTED_URL: https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.4/phantom-${{ matrix.target }}.tar.gz
+          EXPECTED_SHA256: ${{ matrix.sha256 }}
+        shell: bash
+        run: |
+          formula_json="$(brew info --json=v2 ashlrai/phantom/phantom)"
+          ruby -rjson -e '
+            stable = JSON.parse(STDIN.read).fetch("formulae").fetch(0)
+              .fetch("urls").fetch("stable")
+            abort "unexpected formula URL" unless stable.fetch("url") == ENV.fetch("EXPECTED_URL")
+            abort "unexpected formula checksum" unless stable.fetch("checksum") == ENV.fetch("EXPECTED_SHA256")
+          ' <<<"$formula_json"
+      - name: Install and test release
+        shell: bash
+        run: |
           brew install ashlrai/phantom/phantom
           brew test ashlrai/phantom/phantom
