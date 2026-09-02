@@ -19,8 +19,15 @@ Then install the fully qualified formula:
 brew install ashlrai/phantom/phantom
 ```
 
-This tap installs Phantom Secrets `v0.7.3` from the verified prebuilt release
-assets published by [`ashlrai/phantom-secrets`](https://github.com/ashlrai/phantom-secrets/releases/tag/v0.7.3).
+This tap installs Phantom Secrets `v0.7.4` from the verified prebuilt release
+assets published by [`ashlrai/phantom-secrets`](https://github.com/ashlrai/phantom-secrets/releases/tag/v0.7.4).
+
+## Platform verification
+
+The tap's pull-request checks install and test the formula on native GitHub-hosted
+runners for macOS and Linux, on both arm64 and x86_64. These checks verify archive
+selection and execution on those runner images; they do not claim compatibility
+with every operating-system version, Linux distribution, or older system library.
 
 ## About
 
