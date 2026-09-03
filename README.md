@@ -19,8 +19,8 @@ Then install the fully qualified formula:
 brew install ashlrai/phantom/phantom
 ```
 
-This tap installs Phantom Secrets `v0.7.4` from the verified prebuilt release
-assets published by [`ashlrai/phantom-secrets`](https://github.com/ashlrai/phantom-secrets/releases/tag/v0.7.4).
+This tap installs Phantom Secrets `v0.7.5` from the verified prebuilt release
+assets published by [`ashlrai/phantom-secrets`](https://github.com/ashlrai/phantom-secrets/releases/tag/v0.7.5).
 
 ## Platform verification
 
