@@ -17,23 +17,23 @@ class Phantom < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.8/phantom-aarch64-apple-darwin.tar.gz"
-      sha256 "ee13e62defab60ee39224d627943b288c8b1c1361e0e577f39038fbfdae7f6fc"
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.9/phantom-aarch64-apple-darwin.tar.gz"
+      sha256 "0c30d0404f3cb809ad95d2e8bfbe346348929e54e40e4574153107c5e7cad38a"
     end
     on_intel do
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.8/phantom-x86_64-apple-darwin.tar.gz"
-      sha256 "5aad11ee1a26ff9c83f60df6ced7e81191f636c9d2d80451f664ca95f145e711"
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.9/phantom-x86_64-apple-darwin.tar.gz"
+      sha256 "cdc22e66bcb070edf6a47eb79d8810623f8da70b8e3da65a2438df367ac4ee8c"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.8/phantom-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "4383311bfb7f80219af6fcfd164fec88a021b174ed4c2c9267bf15350511349b"
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.9/phantom-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "d29250aecc8a11eba710da97865e36c9acd35b77fa77447086926604f0ee3295"
     end
     on_intel do
-      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.8/phantom-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "9c7ca625fed3b54bd866526074986e7f41c271879d81ce7fe532bb3887787d77"
+      url "https://github.com/ashlrai/phantom-secrets/releases/download/v0.7.9/phantom-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "d791d27389d6ebc8c9224458a30d4f708b52fa6cbc71954907ab895760b41598"
     end
   end
 
